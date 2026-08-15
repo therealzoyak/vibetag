@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vibetag ⋆˚꩜ personalized emoji combos for your contacts</title>
+<meta name="author" content="Zoya Khan" />
+<meta name="description" content="Describe a friend, get cute personalized emoji combos for their contact name. Made by Zoya Khan." />
+<!-- Open Graph -->
+<meta property="og:title" content="vibetag — personalized emoji combos" />
+<meta property="og:description" content="Describe a friend → get cute emoji combos for their contact. A tiny toy by Zoya Khan." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏷️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #fdfcf8;
+    --ink: #2b2440;
+    --muted: #8b8299;
+    --line: #2b2440;
+    --accent: #a06bff;
+    --accent2: #ff7fbf;
+    --yellow: #ffd76b;
+    --mint: #b6f0d4;
+    --sky: #bcd9ff;
+    --card: #ffffff;
+    --shadow: 4px 4px 0 var(--ink);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 500px at 12% -8%, #fbe9ff 0%, transparent 55%),
+      radial-gradient(1000px 480px at 100% 0%, #e4f0ff 0%, transparent 50%),
+      radial-gradient(900px 500px at 50% 120%, #fff2f7 0%, transparent 55%),
+      var(--paper);
+    background-attachment: fixed;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* nav */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px; max-width: 720px; margin: 0 auto;
+  }
+  .brand { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 22px; color: var(--ink); }
+  .brand span { color: var(--accent); }
+  .byline { font-weight: 800; font-size: 14px; color: var(--ink); }
+  .byline a { color: var(--ink); border-bottom: 2px solid var(--accent); }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 8px 18px 90px; }
+
+  header.hero { text-align: center; margin: 18px 0 26px; }
+  .hero h1 {
+    font-family: "Fredoka", sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 60px);
+    margin: 0; line-height: 1.02; letter-spacing: -1px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(92deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { font-size: 18px; color: var(--muted); margin: 12px auto 0; max-width: 460px; font-weight: 600; }
+
+  /* cards */
+  .card {
+    background: var(--card); border: 2.5px solid var(--line); border-radius: 22px;
+    padding: 22px; box-shadow: var(--shadow); margin-bottom: 22px;
+  }
+  .sec-title {
+    font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 20px; margin: 0 0 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sec-badge { font-size: 13px; }
+
+  .field-label { font-weight: 800; font-size: 14px; display:block; margin-bottom: 8px; }
+  .field-label .opt { font-weight: 600; color: var(--muted); }
+  textarea, input.text {
+    width: 100%; resize: vertical; border: 2px solid var(--line); border-radius: 14px;
+    padding: 13px 14px; font-size: 16px; font-family: inherit; font-weight: 600; color: var(--ink);
+    background: #fff; outline: none; transition: box-shadow .12s, transform .12s;
+  }
+  textarea:focus, input.text:focus { box-shadow: var(--shadow); }
+  input.text::placeholder, textarea::placeholder { color: #b7afc4; font-weight: 600; }
+  .row { margin-top: 18px; }
+  .row:first-of-type { margin-top: 14px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 2px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 7px 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--ink);
+    transition: transform .08s, box-shadow .12s; user-select: none;
+  }
+  .chip:hover { transform: translate(-1px,-1px); box-shadow: 2px 2px 0 var(--ink); }
+  .chip.active { background: var(--ink); color: #fff; }
+  .styles .chip.active { background: linear-gradient(92deg, var(--accent), var(--accent2)); border-color: var(--ink); }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+  .switch { position: relative; width: 54px; height: 30px; flex: none; }
+  .switch input { display: none; }
+  .slider-sw { position: absolute; inset: 0; background: #fff; border: 2px solid var(--line); border-radius: 999px; transition: .18s; cursor: pointer; }
+  .slider-sw:before { content:""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: var(--ink); border-radius: 50%; transition: .18s; }
+  .switch input:checked + .slider-sw { background: linear-gradient(92deg, var(--accent), var(--accent2)); }
+  .switch input:checked + .slider-sw:before { transform: translateX(24px); background:#fff; }
+
+  select {
+    border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 15px;
+    font-family: inherit; font-weight: 700; color: var(--ink); background: #fff; outline: none; margin-top: 10px; cursor: pointer;
+  }
+  .collapsible { max-height: 0; overflow: hidden; transition: max-height .28s ease; }
+  .collapsible.open { max-height: 90px; }
+
+  .slider-block { margin-top: 22px; }
+  .slider-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .slider-head .val { font-family:"Fredoka",sans-serif; font-weight: 600; color: var(--accent); font-size: 15px; }
+  .ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 700; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 999px; margin-top: 10px;
+    background: linear-gradient(92deg, var(--accent), var(--accent2)); border: 2px solid var(--line); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+    background: #fff; border: 2.5px solid var(--line); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+  input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 2.5px solid var(--line); cursor: pointer; }
+
+  button.go {
+    width: 100%; margin-top: 24px; padding: 16px; border: 2.5px solid var(--line); border-radius: 16px;
+    font-family: "Fredoka", sans-serif; font-size: 20px; font-weight: 600; color: #fff; cursor: pointer;
+    background: linear-gradient(92deg, var(--accent), var(--accent2)); box-shadow: var(--shadow);
+    transition: transform .08s, box-shadow .08s;
+  }
+  button.go:hover { transform: translate(-1px,-1px); box-shadow: 6px 6px 0 var(--ink); }
+  button.go:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
+
+  /* results */
+  .result {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: #fff; border: 2px solid var(--line); border-radius: 16px;
+    padding: 13px 15px; margin-bottom: 12px; box-shadow: 3px 3px 0 var(--ink);
+    animation: pop .32s cubic-bezier(.2,1.2,.4,1) both;
+  }
+  @keyframes pop { from { opacity:0; transform: translateY(8px) scale(.98);} to {opacity:1; transform:none;} }
+  .combo { font-size: 27px; line-height: 1.1; letter-spacing: 2px; }
+  .rlabel { font-size: 13px; color: var(--muted); margin-top: 5px; font-weight: 700; font-style: italic; }
+  .rleft { display: flex; flex-direction: column; }
+  .copy {
+    border: 2px solid var(--line); background: var(--yellow); border-radius: 11px; padding: 8px 14px;
+    font-size: 13px; font-weight: 800; cursor: pointer; color: var(--ink); white-space: nowrap; transition: transform .08s;
+  }
+  .copy:hover { transform: translate(-1px,-1px); }
+  .copy.copied { background: var(--mint); }
+  .actions { display: flex; gap: 10px; margin-top: 6px; }
+  .actions button {
+    flex: 1; padding: 13px; border-radius: 13px; border: 2px solid var(--line); background: var(--sky);
+    font-family:"Fredoka",sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; color: var(--ink); box-shadow: 3px 3px 0 var(--ink); transition: transform .08s;
+  }
+  .actions button:hover { transform: translate(-1px,-1px); }
+  .empty { text-align: center; color: var(--muted); font-weight: 700; padding: 14px 0; }
+
+  footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 26px; font-weight: 700; line-height: 1.7; }
+  footer .made { font-size: 16px; color: var(--ink); }
+  footer a { border-bottom: 2px solid var(--accent); color: var(--ink); }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="brand">vibe<span>tag</span> 🏷️</div>
+    <div class="byline">by <a href="https://github.com/therealzoyak" target="_blank" rel="noopener">Zoya Khan</a></div>
+  </nav>
+
+  <div class="wrap">
+    <header class="hero">
+      <h1>make their contact <span class="grad">cute</span> ✨</h1>
+      <p>describe a friend and get little emoji combos for their contact name (or your bio ♡)</p>
+    </header>
+
+    <!-- ABOUT THEM -->
+    <div class="card">
+      <div class="sec-title">👀 about them</div>
+
+      <div class="row">
+        <label class="field-label" for="interests">what are they into? <span class="opt">(hobbies, interests)</span></label>
+        <input class="text" id="interests" placeholder="matcha, astrology, thrifting, indie films..." />
+      </div>
+
+      <div class="row">
+        <label class="field-label" for="vibe">what's their personality / vibe?</label>
+        <input class="text" id="vibe" placeholder="chaotic mom-friend, super smart, soft & sweet..." />
+      </div>
+
+      <div class="row">
+        <label class="field-label">relationship <span class="opt">(optional)</span></label>
+        <div class="chips" id="relChips"></div>
+      </div>
+
+      <div class="row toggle-row">
+        <label class="field-label" style="margin:0">are they into astrology? ♓︎</label>
+        <label class="switch"><input type="checkbox" id="astroToggle"><span class="slider-sw"></span></label>
+      </div>
+      <div class="collapsible" id="astroWrap">
+        <select id="signSelect">
+          <option value="">their sign (optional)</option>
+          <option value="aries">♈︎ aries</option><option value="taurus">♉︎ taurus</option>
+          <option value="gemini">♊︎ gemini</option><option value="cancer">♋︎ cancer</option>
+          <option value="leo">♌︎ leo</option><option value="virgo">♍︎ virgo</option>
+          <option value="libra">♎︎ libra</option><option value="scorpio">♏︎ scorpio</option>
+          <option value="sagittarius">♐︎ sagittarius</option><option value="capricorn">♑︎ capricorn</option>
+          <option value="aquarius">♒︎ aquarius</option><option value="pisces">♓︎ pisces</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- HOW IT LOOKS -->
+    <div class="card">
+      <div class="sec-title">🎨 how it looks</div>
+
+      <div class="row">
+        <label class="field-label">style</label>
+        <div class="chips styles" id="styleChips"></div>
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-head"><label class="field-label" style="margin:0">how many emojis?</label><span class="val" id="numVal">3</span></div>
+        <input type="range" id="numRange" min="2" max="6" step="1" value="3" />
+        <div class="ends"><span>2</span><span>6</span></div>
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-head"><label class="field-label" style="margin:0">on the nose ↔ deep cut</label><span class="val" id="litVal">balanced</span></div>
+        <input type="range" id="litRange" min="0" max="100" step="1" value="35" />
+        <div class="ends"><span>🎯 literal · smart→🤓</span><span>clever · smart→📊♟️ 🧩</span></div>
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-head"><label class="field-label" style="margin:0">variety across options</label><span class="val" id="varVal">medium</span></div>
+        <input type="range" id="varRange" min="0" max="100" step="1" value="55" />
+        <div class="ends"><span>similar options</span><span>wildly different</span></div>
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-head"><label class="field-label" style="margin:0">focus within each combo</label><span class="val" id="cohVal">mixed</span></div>
+        <input type="range" id="cohRange" min="0" max="100" step="1" value="45" />
+        <div class="ends"><span>🌸 one identity</span><span>all their sides 🌈</span></div>
+      </div>
+
+      <button class="go" id="goBtn">generate combos ✨</button>
+    </div>
+
+    <div id="results">
+      <div class="card empty">your combos will show up here ˚⊹♡</div>
+    </div>
+
+    <footer>
+      <div class="made">made with 💜 by <a href="https://github.com/therealzoyak" target="_blank" rel="noopener">Zoya Khan</a></div>
+      <div>a tiny toy · neal.fun-coded · <a href="https://github.com/therealzoyak/vibetag" target="_blank" rel="noopener">source on github</a></div>
+    </footer>
+  </div>
+
+<script>
+// ---------- vocab: keyword -> [literal pool, deep-cut pool] ----------
+const KW = {
+  coffee:[["☕️","🤎"],["🫘","🌅"]], matcha:[["🍵","💚"],["🌱","🫧"]], tea:[["🍵","🫖"],["🌿"]],
+  wine:[["🍷","🍇"],["🍾"]], boba:[["🧋"],["🐸","🧫"]],
+  astrology:[["🔮","🌙"],["🪐","🌌","♓︎"]], moon:[["🌙","🌛"],["🌘","🌕"]], star:[["⭐️","✨"],["🌌","💫"]], crystal:[["🔮","💎"],["🪨","🧿"]],
+  plant:[["🪴","🌿"],["🌱","🍃"]], flower:[["🌸","🌷","🌼"],["🥀","🌾"]], garden:[["🌱","🐛"],["🪱","🧑‍🌾"]], sun:[["☀️","🌻"],["🌅","🔆"]],
+  gym:[["🏋️","💪"],["🥤","🏆","🧬"]], fit:[["💪","🏃‍♀️"],["🥗","📈"]], run:[["🏃‍♀️","👟"],["🛣️"]], yoga:[["🧘‍♀️","🕉️"],["🌫️","🪷"]], dance:[["💃","🎶"],["🩰","🪩"]], hike:[["🥾","⛰️"],["🧭","🗺️"]],
+  book:[["📚","🤓"],["🔖","🦉"]], read:[["📖","🍂"],["🕯️","🔖"]], write:[["✍️","📓"],["🖋️","📜"]],
+  art:[["🎨","🖌️"],["🖼️","🎭"]], paint:[["🎨","🖼️"],["🖌️","🪣"]],
+  music:[["🎧","🎶"],["🎼","📻","🪩"]], sing:[["🎤","🎵"],["🎼"]], guitar:[["🎸","🤘"],["🪕"]], game:[["🎮","👾"],["🕹️","🎲"]], anime:[["🌸","⛩️"],["🍥","📺"]],
+  cook:[["🍳","👩‍🍳"],["🧄","🥄"]], bake:[["🧁","🍪"],["🫓","🥖"]], food:[["🍽️","😋"],["🥢","🍴"]], pizza:[["🍕"],["🇮🇹"]], sushi:[["🍣","🥢"],["🍙"]],
+  travel:[["✈️","🗺️"],["🧳","🧭","🌍"]], beach:[["🏖️","🐚"],["🌅","🩴"]], ocean:[["🌊","🐚"],["🫧","⚓️"]], mountain:[["⛰️","🏔️"],["🧗"]], camp:[["⛺️","🔥"],["🪵","🔦"]],
+  fashion:[["👗","💅"],["🧵","🪡","👛"]], makeup:[["💄","💋"],["🪞","🎨"]], nails:[["💅","💖"],["🎀"]], shop:[["🛍️","💳"],["🧾"]], thrift:[["🧥","♻️"],["🪙","🧦"]],
+  dog:[["🐶","🦴"],["🐾","🥎"]], cat:[["🐱","🧶"],["🐈‍⬛","🌙"]], pet:[["🐾","🥺"],["🐇"]], bunny:[["🐰","🥕"],["🌿"]],
+  cozy:[["🧸","🕯️"],["🫖","🧦"]], film:[["🎬","🍿"],["🎞️","📽️"]], movie:[["🍿","🎞️"],["🎫"]], photo:[["📷","🎞️"],["🖼️","🌇"]], pinterest:[["📌","🎀"],["🗂️","🖼️"]],
+  chaotic:[["🌪️","🤪","🔥"],["🎢","🧨","🌀"]], chaos:[["🌪️","💥"],["🎢","🌀"]], soft:[["🤍","🎀"],["🫧","🌾","🕊️"]], sweet:[["🍯","🍬"],["🧁","🌸"]],
+  funny:[["😜","🤣"],["🤡","🎭","🃏"]], silly:[["🤪","🫠"],["🃏","🎪"]], smart:[["🤓","🧠"],["📊","♟️","💻","🔬"]], nerd:[["🤓","📚"],["💻","🧮","🔭"]],
+  elegant:[["🤍","🕊️"],["🥂","🪞","🦢"]], classy:[["🥂","💎"],["🎻","🪞"]], glam:[["💅","💋"],["💎","🪩"]], baddie:[["😈","💅","🔥"],["🖤","💋"]],
+  kind:[["🫶","🌷"],["🕊️","🍯"]], caring:[["🤱","🫂"],["🍲","🧺"]], mom:[["👜","🧺","☕️"],["🍲","🩹","🔑"]], protective:[["🛡️","🧿"],["🐕","🔒"]],
+  energetic:[["⚡️","🎉"],["🔋","🎆"]], calm:[["🧘‍♀️","🌫️"],["🍵","🪷"]], mysterious:[["🌑","🕸️"],["🗝️","🎭","🌘"]], dreamy:[["🌙","☁️"],["💭","🫧","🌫️"]],
+  spicy:[["🌶️","🔥"],["🌋"]], cool:[["😎","🧊"],["🕶️","🎧"]], warm:[["🔆","🧡"],["🕯️","🍂"]], loyal:[["🤝","🐕"],["🔗","🪢"]],
+  gothic:[["🖤","🕷️"],["🥀","⚰️"]], goth:[["🖤","🦇"],["🥀","🕯️"]], grunge:[["🖤","⛓️"],["📼","🎸"]], pink:[["🎀","🩷"],["🌸","💗"]], y2k:[["💿","🦋"],["📟","💾"]],
+  angel:[["😇","🕊️"],["🤍","☁️"]], devil:[["😈","🔥"],["🃏","🖤"]], fairy:[["🧚‍♀️","🍄"],["🌿","🪷"]], witch:[["🧙‍♀️","🔮"],["🕯️","🌿"]],
+  best:[["👯‍♀️","💖"],["🔗"]], bestie:[["👯‍♀️","💖"],["🫂"]], friend:[["🫶","🌈"],["🧩"]], crush:[["🥰","💌"],["🎐","🫀"]], partner:[["💍","🫶"],["🔗","🗝️"]],
+  sibling:[["🧬","🏠"],["🪢"]], sister:[["👭","🎀"],["🧬"]], brother:[["🤝","🎮"],["🧬"]], coworker:[["💼","☕️"],["📎","🗂️"]],
+  online:[["💻","🌐"],["📡","👾"]], childhood:[["🧸","📼"],["🪀","🖍️"]],
+};
+const FLAIR = {
+  cute: ["✨","🫶","🎀","💗","🌸","🩷","🥺","⭐️","💫","🌈","🧸","🍓","🐣"],
+  aesthetic: ["⋆","˚","♡","꩜","☁️","🤍","🕊️","🌙","✧","☾"],
+  funny: ["💀","😭","🤡","🫠","😈","🤪","🗿","🙃","🫥","🐐","🤨"],
+};
+const RELATIONSHIPS = ["bestie","crush","sister","brother","mom-friend","coworker","online friend","partner","childhood friend"];
+const STYLES = [{id:"cute",label:"cute 🫶"},{id:"aesthetic",label:"aesthetic ⋆˚"},{id:"funny",label:"funny 💀"}];
+const SIGN_EMOJI = { aries:["♈︎","🐏"], taurus:["♉︎","🐂"], gemini:["♊︎","👯"], cancer:["♋︎","🦀"], leo:["♌︎","🦁"], virgo:["♍︎","🌾"], libra:["♎︎","⚖️"], scorpio:["♏︎","🦂"], sagittarius:["♐︎","🏹"], capricorn:["♑︎","🐐"], aquarius:["♒︎","🌊"], pisces:["♓︎","🐟"] };
+const LABELS = {
+  cute:["soft & sweet","the comfort person","pure sunshine","your fav human","gentle chaos","heart of gold","cozy energy","the sweetheart","little ray of light"],
+  aesthetic:["ethereal","moonchild energy","quiet luxury","dreamcore","celestial","muted & pretty","angelic","that girl","soft focus"],
+  funny:["certified menace","group chat villain","unhinged (affectionate)","chaos goblin","0 thoughts","the funny one","feral bestie","clown behavior","menace to society"],
+};
+
+let selectedRel = null, selectedStyle = "cute", astroOn = false, sign = "";
+let numEmojis = 3, literal = 35, variety = 55, cohesion = 45;
+
+const relChips = document.getElementById("relChips");
+RELATIONSHIPS.forEach(r => {
+  const c = document.createElement("div"); c.className = "chip"; c.textContent = r;
+  c.onclick = () => {
+    if (selectedRel === r) { selectedRel = null; c.classList.remove("active"); }
+    else { selectedRel = r; [...relChips.children].forEach(x=>x.classList.remove("active")); c.classList.add("active"); }
+  };
+  relChips.appendChild(c);
+});
+const styleChips = document.getElementById("styleChips");
+STYLES.forEach(s => {
+  const c = document.createElement("div"); c.className = "chip" + (s.id===selectedStyle?" active":""); c.textContent = s.label;
+  c.onclick = () => { selectedStyle = s.id; [...styleChips.children].forEach(x=>x.classList.remove("active")); c.classList.add("active"); };
+  styleChips.appendChild(c);
+});
+const astroToggle = document.getElementById("astroToggle"), astroWrap = document.getElementById("astroWrap");
+astroToggle.onchange = () => { astroOn = astroToggle.checked; astroWrap.classList.toggle("open", astroOn); };
+document.getElementById("signSelect").onchange = e => sign = e.target.value;
+const bind = (id, cb) => { const el = document.getElementById(id); el.oninput = () => cb(+el.value); };
+function litLabel(v){ return v<25?"very literal":v<45?"balanced":v<70?"a bit deep":"deep cut"; }
+function varLabel(v){ return v<25?"low":v<60?"medium":v<80?"high":"chaos mode"; }
+function cohLabel(v){ return v<25?"laser-focused":v<55?"mixed":v<80?"broad":"everything"; }
+bind("numRange", v => { numEmojis=v; document.getElementById("numVal").textContent=v; });
+bind("litRange", v => { literal=v; document.getElementById("litVal").textContent=litLabel(v); });
+bind("varRange", v => { variety=v; document.getElementById("varVal").textContent=varLabel(v); });
+bind("cohRange", v => { cohesion=v; document.getElementById("cohVal").textContent=cohLabel(v); });
+
+const pickOne = arr => arr[Math.floor(Math.random()*arr.length)];
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function rotate(a,n){ n%=a.length||1; return [...a.slice(n),...a.slice(0,n)]; }
+
+function buildGroups() {
+  const text = (document.getElementById("interests").value + " " + document.getElementById("vibe").value + " " + (selectedRel||"")).toLowerCase();
+  const groups = [];
+  for (const [k,[lit,deep]] of Object.entries(KW)) {
+    if (text.includes(k)) groups.push({ lit, deep: deep && deep.length ? deep : lit });
+  }
+  if (astroOn) {
+    groups.push({ lit:["🔮","🌙","✨"], deep:["🪐","🌌","♓︎","🌘"] });
+    if (sign && SIGN_EMOJI[sign]) groups.push({ lit:[SIGN_EMOJI[sign][0]], deep:SIGN_EMOJI[sign] });
+  }
+  return groups;
+}
+function emojiFromGroup(g) {
+  const goDeep = Math.random()*100 < literal && g.deep.length;
+  const pool = goDeep ? g.deep : (g.lit.length ? g.lit : g.deep);
+  return pickOne(pool);
+}
+function themesPerCombo(groupCount) {
+  const maxT = Math.max(1, Math.min(numEmojis, groupCount || 1));
+  return Math.max(1, Math.round(1 + (maxT - 1) * (cohesion/100)));
+}
+function seedGroups(groups, comboIndex) {
+  if (!groups.length) return [];
+  const t = themesPerCombo(groups.length);
+  let ordered;
+  if (variety < 30) ordered = groups;
+  else if (variety < 70) ordered = rotate(groups, comboIndex);
+  else ordered = shuffle(groups);
+  return ordered.slice(0, t);
+}
+function makeCombo(groups, comboIndex) {
+  const themes = seedGroups(groups, comboIndex);
+  const flair = FLAIR[selectedStyle];
+  const emojis = [];
+  let i = 0, guard = 0;
+  while (emojis.length < numEmojis && guard++ < numEmojis*6) {
+    const g = themes.length ? themes[i % themes.length] : null;
+    const e = g ? emojiFromGroup(g) : pickOne(flair);
+    if (!emojis.includes(e)) emojis.push(e);
+    i++;
+  }
+  while (emojis.length < numEmojis) { const f = pickOne(flair); if(!emojis.includes(f)) emojis.push(f); else break; }
+  let parts = emojis;
+  if (selectedStyle === "aesthetic" && Math.random() > 0.4) parts = [pickOne(["⋆","˚","♡","✧","꩜","☾"]), ...parts];
+  return parts.join(selectedStyle === "aesthetic" ? "" : " ").trim();
+}
+function generate() {
+  const groups = buildGroups();
+  const combos = [], seen = new Set();
+  let attempts = 0;
+  for (let idx = 0; combos.length < 6 && attempts < 60; attempts++, idx++) {
+    const c = makeCombo(groups, idx);
+    if (!seen.has(c)) { seen.add(c); combos.push(c); }
+  }
+  const labels = shuffle(LABELS[selectedStyle]);
+  render(combos.map((c,i)=>({combo:c, label:labels[i%labels.length]})));
+}
+function render(items) {
+  const box = document.getElementById("results");
+  box.innerHTML = "";
+  const card = document.createElement("div"); card.className = "card";
+  items.forEach(({combo,label}) => {
+    const row = document.createElement("div"); row.className = "result";
+    row.innerHTML = `<div class="rleft"><div class="combo"></div><div class="rlabel"></div></div>`;
+    row.querySelector(".combo").textContent = combo;
+    row.querySelector(".rlabel").textContent = label;
+    const btn = document.createElement("button"); btn.className = "copy"; btn.textContent = "copy";
+    btn.onclick = () => { navigator.clipboard.writeText(combo); btn.textContent="copied ♡"; btn.classList.add("copied");
+      setTimeout(()=>{ btn.textContent="copy"; btn.classList.remove("copied"); },1200); };
+    row.appendChild(btn); card.appendChild(row);
+  });
+  const actions = document.createElement("div"); actions.className = "actions";
+  const regen = document.createElement("button"); regen.textContent = "🔄 regenerate"; regen.onclick = generate;
+  actions.appendChild(regen); card.appendChild(actions); box.appendChild(card);
+  box.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+document.getElementById("goBtn").onclick = generate;
+</script>
+</body>
+</html>

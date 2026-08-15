@@ -1,0 +1,15 @@
+# os
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+
+# node (for future tooling)
+node_modules/
+npm-debug.log*
+
+# env
+.env
+.env.local
