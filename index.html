@@ -93,7 +93,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
     border: 2px solid var(--line); background: #fff; border-radius: 999px;
-    padding: 7px 14px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--ink);
+    padding: 7px 14px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--ink);
     transition: transform .08s, box-shadow .12s; user-select: none;
   }
   .chip:hover { transform: translate(-1px,-1px); box-shadow: 2px 2px 0 var(--ink); }
@@ -102,9 +102,10 @@
 
   .toggle-row { display: flex; align-items: center; justify-content: space-between; }
   .switch { position: relative; width: 54px; height: 30px; flex: none; }
-  .switch input { display: none; }
+  .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
   .slider-sw { position: absolute; inset: 0; background: #fff; border: 2px solid var(--line); border-radius: 999px; transition: .18s; cursor: pointer; }
   .slider-sw:before { content:""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: var(--ink); border-radius: 50%; transition: .18s; }
+  .switch input:focus-visible + .slider-sw { outline: 3px solid var(--accent); outline-offset: 3px; }
   .switch input:checked + .slider-sw { background: linear-gradient(92deg, var(--accent), var(--accent2)); }
   .switch input:checked + .slider-sw:before { transform: translateX(24px); background:#fff; }
 
@@ -305,7 +306,7 @@ let numEmojis = 3, literal = 35, variety = 55, cohesion = 45;
 
 const relChips = document.getElementById("relChips");
 RELATIONSHIPS.forEach(r => {
-  const c = document.createElement("div"); c.className = "chip"; c.textContent = r;
+  const c = document.createElement("button"); c.type = "button"; c.className = "chip"; c.textContent = r;
   c.onclick = () => {
     if (selectedRel === r) { selectedRel = null; c.classList.remove("active"); }
     else { selectedRel = r; [...relChips.children].forEach(x=>x.classList.remove("active")); c.classList.add("active"); }
@@ -314,7 +315,7 @@ RELATIONSHIPS.forEach(r => {
 });
 const styleChips = document.getElementById("styleChips");
 STYLES.forEach(s => {
-  const c = document.createElement("div"); c.className = "chip" + (s.id===selectedStyle?" active":""); c.textContent = s.label;
+  const c = document.createElement("button"); c.type = "button"; c.className = "chip" + (s.id===selectedStyle?" active":""); c.textContent = s.label;
   c.onclick = () => { selectedStyle = s.id; [...styleChips.children].forEach(x=>x.classList.remove("active")); c.classList.add("active"); };
   styleChips.appendChild(c);
 });
